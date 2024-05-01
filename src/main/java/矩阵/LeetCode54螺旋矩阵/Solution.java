@@ -22,52 +22,23 @@ public class Solution {
     public List<Integer> spiralOrder(int[][] matrix) {
         int m = matrix.length;
         int n = matrix[0].length;
-        int a, b, c, d;
-        a = 0;
-        b = m - 1;
-        c = 0;
-        d = n - 1;
-        int count = 0;
         List<Integer> list = new ArrayList<>();
-        while (count != m * n) {
-            for (int j = c; j <= d; j++) {
-                list.add(matrix[a][j]);
-                count++;
+        boolean[][] visited = new boolean[m][n];
+        int r = 0;
+        int c = 0;
+        int index = 0;
+        int[][] directions = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        for (int i = 0; i < m * n; i++) {
+            list.add(matrix[r][c]);
+            visited[r][c] = true;
+            int newR = r + directions[index][0];
+            int newC = c + directions[index][1];
+            if (newR < 0 || newR >= m || newC < 0 || newC >= n || visited[newR][newC]) {
+                index = (index + 1) % 4;
             }
-            a++;
-            if (check(m, n, count)) {
-                break;
-            }
-            for (int i = a; i <= b; i++) {
-                list.add(matrix[i][d]);
-                count++;
-            }
-            d--;
-            if (check(m, n, count)) {
-                break;
-            }
-            for (int j = d; j >= c; j--) {
-                list.add(matrix[b][j]);
-                count++;
-            }
-            b--;
-            if (check(m, n, count)) {
-                break;
-            }
-            for (int i = b; i >= a; i--) {
-                list.add(matrix[i][c]);
-                count++;
-            }
-            c++;
-            if (check(m, n, count)) {
-                break;
-            }
+            r += directions[index][0];
+            c += directions[index][1];
         }
-
         return list;
-    }
-
-    private boolean check(int m, int n, int count) {
-        return count == m * n;
     }
 }
